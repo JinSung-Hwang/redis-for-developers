@@ -1,0 +1,51 @@
+# Compiled class files
+/target/
+
+# Generated IDE-specific files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Dependency directories
+**/bin/
+**/lib/
+
+# Application properties
+**/application.properties
+
+# Log files
+**/log/
+
+# Gradle files
+**/.gradle/
+**/build/
+
+# Maven files
+**/.m2/
+
+# Eclipse files
+**/.classpath
+**/.project
+**/.settings/
+
+# IntelliJ IDEA files
+**/*.iml
+**/*.ipr
+**/*.iws
+**/.idea/
+
+# Visual Studio Code files
+**/.vscode/
+
+# Eclipse-specific files
+**/.recommenders/
+
+# Spring Boot DevTools configuration files
+.restart
+
+# IDE-specific files
+*.DS_Store
+
+# output file
+out
