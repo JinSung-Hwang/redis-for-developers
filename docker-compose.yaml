@@ -1,0 +1,20 @@
+version: '3'
+services:
+  redis:
+    image: redis:7.4.2
+    ports:
+      - "6379:6379"
+    privileged: true
+    ulimits:
+      nofile:
+        soft: 10000
+        hard: 10000
+    sysctls:
+      - vm.overcommit_memory=1
+    entrypoint: >
+      sh -c "
+      echo never > /sys/kernel/mm/transparent_hugepage/enabled;
+      echo never > /sys/kernel/mm/transparent_hugepage/defrag;
+      sysctl vm.overcommit_memory=1;
+      redis-server
+      "
