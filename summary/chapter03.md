@@ -55,3 +55,50 @@
 - ZADD 커맨드의 XX, NX, LT, GT 옵션은 무엇인가?
 - ZRANGE 명령어는 무엇인가?
 - ZRANGE key startIdx stopIdx [withscores] 중 withscores 명령어는 무엇인가?
+- ZRANGE BYLEX 옵션은 무엇인가?
+
+#### 비트맵
+- 비트맵 자료구조는 무엇인가? 
+- SETBIT, GETBIT 명령어는 무엇인가?
+- BITFIELD 명령어는 무엇인가?
+
+#### Hyperloglog 자료구조
+- Hyperloglog 자료 구조는 무엇인가?
+- 어떨때 사용하는 자료구조인가?
+- PFADD, PFCOUNT 명령어는 무엇인가? 
+- 약 1844경까지 저장 가능하다.
+
+#### Geospatial 자료구조
+- Geospatial는 무슨 자료 구조인가?
+- Geospatial는 내무적으로 어떤 자료 구조로 저장되는가?
+- `GEOADD <key> 위도 경도 member` 순서로 저장되는가?
+- XX, NX 옵션은 무엇인가?
+- GEOPOS 명령어는 무엇인가?
+- GEODIST 명령어는 무엇인가?
+
+#### STREAM 자료구조
+- STREAM은 어떤 자료 구조인가?
+- 언제 사용할 수 있는 자료 구조인가?
+
+#### 레디스에서 키를 관리하는 법
+키의 자동 생성과 삭제
+
+Stream, Set, Sorted Set, Hash, List와 같은 하나의 키에 여러 아이템을 포함하는 자료구조는 
+- 명시적으로 키를 생성하지 않아도 아이템을 추가하면 생성되는가? 
+- 명시적으로 키를 삭제하지 않고 아이템을 모두 제거하면 자료구조가 삭제되는가?
+- 키가 없는 상태에서 키 삭제, 아이템 조회, 자료 구조 크기 조회 명령어를 사용하면 에러 대신 아이템이 없는것 처럼 작동하는가?
+
+#### 키와 관련된 커맨드
+
+자료구조에 상관없이 모든 키에 공통적으로 사용할 수 있는 커맨드
+- EXIST KEY [key ....] : </br>
+- KEYS pattern : </br>
+  - KEYS는 위험한 명령어인 이유는?
+- SCAN cursor [MATCH pattern] [COUNT count] [TYPE type] :
+- SORT key [By pattern] [Limit offset count] [GET pattern [GET pattern ...]] [ASC | DESC] [ALPHA] [STORE destination] :
+- RENAME key newkey :
+- RENAMENX key newkey :
+- COPY source destination [DB destination-db] [REPLACE]
+- TYPE key : 
+- OBJECT <subcommand> [<arg> [value] [opt]] :
+- FLUSHALL [ASYNC | SYNC] :
