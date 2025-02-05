@@ -102,3 +102,9 @@ Stream, Set, Sorted Set, Hash, List와 같은 하나의 키에 여러 아이템�
 - TYPE key : 
 - OBJECT <subcommand> [<arg> [value] [opt]] :
 - FLUSHALL [ASYNC | SYNC] :
+- DEL key [key ....] :
+- UNLINK key [key ...] :
+- EXPIRE key seconds [ NX | XX | GT | LT] :
+- EXPIREAT key unix-time-seconds [ NX | XX | GT | LT] :
+- EXPIRETIME key :
+- TTL key :
