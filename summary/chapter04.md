@@ -24,15 +24,15 @@ RDB로 만들면 (select * from user where user_id = 123 order by desc created_a
 
 #### Sorted Set을 이용한 태그 기능
 - RDB로 만들면 일반적으로 테이블을 어떻게 만들어야 하는가?
-- 특정 태그(1, 3)이 포함되어있는 게시글 검색하는 쿼리 - 이러면 부하가 많이 걸릴 수 있다.
-   `SELECT port_id FROM tag_post WHERE tag_id IN (1, 3) GROUP BY post_id HAVING COUNT(tag_id) <= 2`;
+- 특정 태그(1, 3)이 포함되어있는 게시글 검색하는 쿼리 - 이러면 부하가 많이 걸릴 수 있다. </br>
+   `SELECT port_id FROM tag_post WHERE tag_id IN (1, 3) GROUP BY post_id HAVING COUNT(tag_id) <= 2`
 
 #### 랜덤 데이터 추출
 ```text
 기본 요구 사항
 1. 경품 응모 유저를 랜덤으로 추출하는 로직
 ```
-- RDB로 랜덤으로 유저를 구하면 어떻게 쿼리를 작성해야하는가?  `... ORDER BY RAND() LIMIT 100`;
+- RDB로 랜덤으로 유저를 구하면 어떻게 쿼리를 작성해야하는가?  `... ORDER BY RAND() LIMIT 100`
 - USER 1만건 이상에서 성능은 어떻게 되는가? 왜 성능이 그렇게 나오는가?
 - 레디스의 RANDOMKEY 명령어는 무엇인가?
 - HRANDFIELD, SRANDMEMBER, ZRANDMEMBER 명령어는 무엇인가?
@@ -40,7 +40,7 @@ RDB로 만들면 (select * from user where user_id = 123 order by desc created_a
 #### Redis 에서 다양한 카운팅 
 
 ##### 좋아요 카운팅 
-```java
+```text
 기본 요구 사항
 1. 뉴스 댓글에 좋아요를 누룰수 있는 기능이다.
 2. 트래픽이 많은 사이트라면 좋아요가 1초에 몇만개이상도 늘어날 수 있으며 RDB로 구현하면 쓰기성능에 문제가 생길 수 있다.
@@ -50,14 +50,14 @@ RDB로 만들면 (select * from user where user_id = 123 order by desc created_a
 - SCARD 명령어로 무엇을 할 수 있는가?
 
 ##### 읽지 않는 메세지 수 카운팅
-```java
+```text
 메세지가 도착할때마다 RDB에 업데이트하는 방식 대신,
 Redis에 일시적으로 데이터를 저장하고있다가 필요한 시점마다 RDB에 업데이트하는 방식을 활용한다.
 ```
 - HINCRBY
 
 ##### DAU(Daily Active User) 구하기
-```java
+```text
 기본 요구 사항
 1. 하루동안 방문한 사용자 수를 구한다.
 2. 3일 연속으로 방문한 사용자 수를 구한다.
@@ -65,4 +65,37 @@ Redis에 일시적으로 데이터를 저장하고있다가 필요한 시점마�
 - Redis Set으로 사용자의 아이디를 저장하고 있으면 안되는가?(권장 200만~300만개)
 - BitMap 자료구조로 어떻게 DAU를 구할 수 있는가? 
 - 3일 연속 방문한 사용자는 어떻게 구할 수 있는가?
+
+#### Hyperloglog를 이용한 애플리케이션 미터링
+```text
+요구사항
+1. 어떤 솔루션에서 API 1회당 과금을 매긴다.
+2. 서버 하나에 1초에 100회씩 로그가 쌓여서 한시간에 36만개, 한달이면 2억6천개 정도 로그가 쌓인다고 가정한다.
+3. 이런 서버가 1대가 아니고 여러대라고 한다면 카운팅하는것도 큰 부하가 될 수 있다.
+```
+1. PFADD 명령어는 무엇인가?
+2. PFCOUNT 명령어는 무엇인가?
+3. PFMERGE 명령어는 무엇인가?
+
+#### Geospatial Index를 이용한 위치 기반 애플리케이션 개발
+위치 데이터란
+```text
+1. 사용자의 현재 위치 파악
+1. 사용자의 이동에 따른 실시간 변동 위치 업데이트
+1. 사용자의 위치를 기준으로 근처의 장소 검색
+```
+단순하게 위치 데이터를 읽고(사용자의 위치를 파악), 쓰는것(실시간 위치 업데이트)는 간단해보여도 </br>
+사용자가 늘어나고 1초마다 위치 정보를 업데이트 한다고 하면 이 기능도 문제가 될 수 있다. </br>
+또한 위치 데이터끼리의 연산(사용자 근처의 맛집 검색)은 위치 데이터를 가공해야하기에 까다롭다. </br>
+
+##### 레디스에서 위치 데이터
+레디스는 GEO 자료 구조를 통해 공간 정보 데이터를 처리 할 수 있다.
+
+- RDB로 위치 정보를 저장하면 어떤 단점이있는가?
+- Redis로 위치 정보를 저장하면 어떤 장점이있는가?
+- GEO SET 자료구조는 어떤 자료 구조인가? 내부적으로 어떤 구조로 저장되는가?
+- `GEOADD key 위도 경도 value` 이 명령어는 무엇인가?
+- `GEOSEARCH key FROMLONLAT member BYRADIUS 1 KM`이 명령어는 무엇인가? 
+- `GEOSEARCH key FROMLONLAT member BYBOX 4 2 KM`이 명령어는 무엇인가? 
+
 
